@@ -10,6 +10,7 @@ import sys
 
 AUDIO_EXTS = {".mp3", ".m4a", ".wav", ".flac", ".ogg", ".mp4", ".aac", ".wma"}
 RECORDINGS_DIR = Path("recordings")
+ARCHIVE_DIR = RECORDINGS_DIR / "archive"
 TRANSCRIPTS_DIR = Path("transcripts")
 
 # モデルサイズ: tiny / base / small / medium / large-v3
@@ -67,7 +68,11 @@ def process_file(audio_path: Path) -> tuple[str, bool, str]:
             lines.append(f"[{start_min:02d}:{start_sec:02d}] {seg.text.strip()}")
 
         output_path.write_text("\n".join(lines), encoding="utf-8")
-        return audio_path.name, True, f"完了 → {output_path}"
+
+        ARCHIVE_DIR.mkdir(exist_ok=True)
+        archive_path = ARCHIVE_DIR / audio_path.name
+        audio_path.rename(archive_path)
+        return audio_path.name, True, f"完了 → {output_path}（archive済み）"
 
     except Exception as e:
         return audio_path.name, False, f"エラー: {e}"
