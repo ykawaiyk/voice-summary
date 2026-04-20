@@ -42,3 +42,24 @@
   - 例：`20260416_181516_ピョーさん面談_カフェ転職希望.md`
   - 例：`20260416_091030_〇〇社打ち合わせ_契約更新.md`
   - 日付・時刻は元ファイル名から取得する
+
+## hamideru-app へのサマリー登録とアーカイブ
+
+面談サマリーを hamideru-app に登録したら、そのファイルを `summaries/archive/` フォルダに移動すること。
+これにより「まだ登録していないサマリー」と「登録済みサマリー」を一目で区別できる。
+
+### 手順
+1. `getCandidates` で候補者IDを特定する
+2. `addInterviewSummary` で登録する
+3. 登録成功を確認したら、ファイルを archive に移動する
+
+```bash
+# 登録
+node -e "const fs=require('fs');const content=fs.readFileSync('C:/dev/voice-summary/summaries/<ファイル名>.md','utf8');process.stdout.write(JSON.stringify({candidateId:'<ID>',title:'<タイトル>',content,source:'claude'}));" | node C:/dev/hamideru-app/tools/api.js addInterviewSummary
+
+# 登録成功後にアーカイブへ移動
+mv "C:/dev/voice-summary/summaries/<ファイル名>.md" "C:/dev/voice-summary/summaries/archive/"
+```
+
+- `summaries/` にあるファイル = 未登録（またはhamideru-app不要）
+- `summaries/archive/` にあるファイル = hamideru-app に登録済み
