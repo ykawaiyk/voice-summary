@@ -9,9 +9,9 @@ import threading
 import sys
 
 AUDIO_EXTS = {".mp3", ".m4a", ".wav", ".flac", ".ogg", ".mp4", ".aac", ".wma"}
-RECORDINGS_DIR = Path("recordings")
+RECORDINGS_DIR = Path(r"G:\マイドライブ\08_ツール\録音データ")
 ARCHIVE_DIR = RECORDINGS_DIR / "archive"
-TRANSCRIPTS_DIR = Path("transcripts")
+TRANSCRIPTS_DIR = Path(__file__).parent / "transcripts"
 
 # モデルサイズ: tiny / base / small / medium / large-v3
 MODEL_SIZE = "small"
